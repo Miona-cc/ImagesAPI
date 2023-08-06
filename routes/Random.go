@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"math/rand"
 	"os"
 	"time"
@@ -32,6 +33,7 @@ func Random(c *fiber.Ctx) error {
 	})
 
 	if err != nil {
+		fmt.Println(err)
 		return c.Status(500).JSON(fiber.Map{
 			"error": "Something went wrong.",
 		})
@@ -44,6 +46,7 @@ func Random(c *fiber.Ctx) error {
 	}, options.FindOne().SetSkip(*randomInt64InRange(max))).Decode(&image)
 
 	if err != nil {
+		fmt.Println(err)
 		return c.Status(500).JSON(fiber.Map{
 			"error": "Something went wrong.",
 		})

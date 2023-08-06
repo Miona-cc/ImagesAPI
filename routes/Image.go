@@ -2,6 +2,7 @@ package routes
 
 import (
 	"context"
+	"fmt"
 	"net/http"
 	"time"
 
@@ -34,12 +35,14 @@ func Image(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.SendStatus(404)
 		}
-		return c.SendStatus(505)
+		fmt.Println(err)
+		return c.SendStatus(500)
 	}
 
 	res, err := http.Get(image.Src)
 
 	if err != nil {
+		fmt.Println(err)
 		return c.SendStatus(500)
 	}
 
