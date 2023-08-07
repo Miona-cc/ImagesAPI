@@ -35,14 +35,14 @@ func Image(c *fiber.Ctx) error {
 		if err == mongo.ErrNoDocuments {
 			return c.SendStatus(404)
 		}
-		fmt.Println(err)
+		fmt.Println("Error while getting image from database: ", err)
 		return c.SendStatus(500)
 	}
 
 	res, err := http.Get(image.Src)
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Error while fetching image from url: ", err)
 		return c.SendStatus(500)
 	}
 

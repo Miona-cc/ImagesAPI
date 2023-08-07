@@ -33,7 +33,7 @@ func Random(c *fiber.Ctx) error {
 	})
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Println("Erorr while counting items from db", err)
 		return c.Status(500).JSON(fiber.Map{
 			"error": "Something went wrong.",
 		})
@@ -46,7 +46,7 @@ func Random(c *fiber.Ctx) error {
 	}, options.FindOne().SetSkip(*randomInt64InRange(max))).Decode(&image)
 
 	if err != nil {
-		fmt.Println(err)
+		fmt.Printf("Erorr while getting random item from db(%d): %s", max, err)
 		return c.Status(500).JSON(fiber.Map{
 			"error": "Something went wrong.",
 		})
