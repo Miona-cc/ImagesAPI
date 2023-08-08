@@ -15,7 +15,7 @@ import (
 	"xixo.cf/profileapi/types"
 )
 
-var tp = []string{"malephoto", "femalephoto", "malegif", "banner", "faceless", "anime", "femalegif", "cars", "nike", "nsfw", "aesthetic", "cartoon", "jewellry", "shoes", "guns", "drill", "money", "smoking", "animals", "soft", "hellokitty", "besties", "match"}
+var tp = []string{"malephoto", "femalephoto", "malegif", "banner", "faceless", "anime", "femalegif", "cars", "nike", "nsfw", "aesthetic", "cartoon", "jewellry", "shoes", "guns", "drill", "money", "smoking", "animals", "soft", "hellokitty", "besties"}
 
 func Random(c *fiber.Ctx) error {
 	t := c.Params("type", "")
@@ -59,6 +59,10 @@ func Random(c *fiber.Ctx) error {
 }
 
 func randomInt64InRange(x int64) *int64 {
+	if x <= 0 {
+		var i int64 = 1
+		return &i
+	}
 	// Create a new random number generator with a custom source seeded with the current time
 	source := rand.NewSource(time.Now().UnixNano())
 	randomGen := rand.New(source)
