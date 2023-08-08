@@ -64,7 +64,7 @@ func randomInt64InRange(x int64) *int64 {
 	randomGen := rand.New(source)
 
 	// Generate a random integer between 0 and x (inclusive)
-	randomInt := randomGen.Int63n(x + 1)
+	randomInt := randomGen.Int63n(x)
 
 	return &randomInt
 }
