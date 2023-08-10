@@ -51,7 +51,7 @@ func main() {
 
 	app.Use(limiter.New(
 		limiter.Config{
-			Max:        100,
+			Max:        100000,
 			Expiration: time.Hour,
 			Next: func(c *fiber.Ctx) bool {
 				return strings.HasPrefix(c.Path(), "/image")
