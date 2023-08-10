@@ -15,7 +15,7 @@ import (
 	"xixo.cf/profileapi/types"
 )
 
-var tp = []string{"malephoto","femalephoto","malegif","banner","faceless","femalegif","cars","nike","nsfw","aesthetic","cartoon","jewellry","shoes","guns","drill","money","smoking","animals","soft","hellokitty","besties","body","food","random","animephoto","animegif"}
+var tp = []string{"malephoto", "femalephoto", "malegif", "banner", "faceless", "femalegif", "cars", "nike", "nsfw", "aesthetic", "cartoon", "jewellry", "shoes", "guns", "drill", "money", "smoking", "animals", "soft", "hellokitty", "besties", "body", "food", "random", "anime"}
 
 func Random(c *fiber.Ctx) error {
 	t := c.Params("type", "")
