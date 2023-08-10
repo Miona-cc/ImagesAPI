@@ -39,9 +39,12 @@ func Random(c *fiber.Ctx) error {
 		})
 	}
 
+	ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
+	defer cancel2()
+
 	var image types.Image
 
-	err = database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(ctx, bson.M{
+	err = database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(ctx2, bson.M{
 		"type": t,
 	}, options.FindOne().SetSkip(*RandomInt64InRange(max))).Decode(&image)
 
