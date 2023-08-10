@@ -64,6 +64,7 @@ func main() {
 
 	app.Get("/image/:id", routes.Image)
 	app.Get("/random/:type", routes.Random)
+	app.Get("/match/:type", routes.RandomMatch)
 
 	port := os.Getenv("PORT")
 	if port == "" {

@@ -43,7 +43,7 @@ func Random(c *fiber.Ctx) error {
 
 	err = database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(ctx, bson.M{
 		"type": t,
-	}, options.FindOne().SetSkip(*randomInt64InRange(max))).Decode(&image)
+	}, options.FindOne().SetSkip(*RandomInt64InRange(max))).Decode(&image)
 
 	if err != nil {
 		fmt.Printf("Erorr while getting random item from db(%d): %s", max, err)
@@ -58,7 +58,7 @@ func Random(c *fiber.Ctx) error {
 
 }
 
-func randomInt64InRange(x int64) *int64 {
+func RandomInt64InRange(x int64) *int64 {
 	if x <= 0 {
 		var i int64 = 1
 		return &i
