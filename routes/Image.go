@@ -22,12 +22,9 @@ func Image(c *fiber.Ctx) error {
 		return c.SendStatus(400)
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
 	var image types.Image
 
-	err := database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(ctx, bson.M{
+	err := database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(context.Background(), bson.M{
 		"id": id,
 	}).Decode(&image)
 

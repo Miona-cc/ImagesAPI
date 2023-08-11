@@ -61,7 +61,7 @@ func main() {
 			},
 		},
 	))
-
+	app.Get("/count", routes.Count)
 	app.Get("/image/:id", routes.Image)
 	app.Get("/random/:type", routes.Random)
 	app.Get("/match/:type", routes.RandomMatch)

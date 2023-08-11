@@ -25,10 +25,7 @@ func Random(c *fiber.Ctx) error {
 		})
 	}
 
-	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel()
-
-	max, err := database.GetMongo().Database("ProfileAPI").Collection("images").CountDocuments(ctx, bson.M{
+	max, err := database.GetMongo().Database("ProfileAPI").Collection("images").CountDocuments(context.Background(), bson.M{
 		"type": t,
 	})
 
@@ -39,12 +36,9 @@ func Random(c *fiber.Ctx) error {
 		})
 	}
 
-	ctx2, cancel2 := context.WithTimeout(context.Background(), 5*time.Second)
-	defer cancel2()
-
 	var image types.Image
 
-	err = database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(ctx2, bson.M{
+	err = database.GetMongo().Database("ProfileAPI").Collection("images").FindOne(context.Background(), bson.M{
 		"type": t,
 	}, options.FindOne().SetSkip(*RandomInt64InRange(max))).Decode(&image)
 
