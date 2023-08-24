@@ -9,6 +9,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
+	"github.com/gofiber/fiber/v2/middleware/logger"
 	"github.com/joho/godotenv"
 	"xixo.cf/profileapi/database"
 	"xixo.cf/profileapi/routes"
@@ -48,6 +49,8 @@ func main() {
 
 		return c.Next()
 	})
+
+	app.Use(logger.New())
 
 	app.Use(limiter.New(
 		limiter.Config{
