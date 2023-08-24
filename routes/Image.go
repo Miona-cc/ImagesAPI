@@ -36,6 +36,10 @@ func Image(c *fiber.Ctx) error {
 		return c.SendStatus(500)
 	}
 
+	if !CheckImage(image.Src) {
+		return c.SendStatus(404)
+	}
+
 	res, err := http.Get(image.Src)
 
 	if err != nil {
@@ -49,4 +53,17 @@ func Image(c *fiber.Ctx) error {
 	c.Set(fiber.HeaderContentType, res.Header.Get("Content-Type"))
 
 	return c.SendStream(res.Body, int(res.ContentLength))
+}
+
+func CheckImage(url string) bool {
+	res, err := http.Head(url)
+	if err != nil {
+		return false
+	}
+
+	if res.StatusCode != 200 {
+		return false
+	}
+
+	return true
 }

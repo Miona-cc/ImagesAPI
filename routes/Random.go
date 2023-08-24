@@ -49,6 +49,12 @@ func Random(c *fiber.Ctx) error {
 		})
 	}
 
+	//If the image doesn't exists, call the function again
+	if CheckImage(image.Src) {
+		Random(c)
+		return nil
+	}
+
 	return c.JSON(fiber.Map{
 		"url": os.Getenv("PUBLIC_URL") + "/image/" + image.Id,
 	})
