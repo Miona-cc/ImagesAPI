@@ -50,7 +50,7 @@ func Random(c *fiber.Ctx) error {
 	}
 
 	//If the image doesn't exists, call the function again
-	if CheckImage(image.Src) {
+	if !CheckImage(image.Src) {
 		Random(c)
 		return nil
 	}
