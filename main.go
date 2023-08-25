@@ -49,8 +49,9 @@ func main() {
 
 		return c.Next()
 	})
-
-	app.Use(logger.New())
+	if os.Getenv("ENV") == "production" {
+		app.Use(logger.New())
+	}
 
 	app.Use(limiter.New(
 		limiter.Config{
