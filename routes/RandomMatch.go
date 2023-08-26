@@ -7,7 +7,6 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"go.mongodb.org/mongo-driver/bson"
-	"go.mongodb.org/mongo-driver/mongo/options"
 	"golang.org/x/exp/slices"
 	"xixo.cf/profileapi/database"
 	"xixo.cf/profileapi/types"
@@ -23,29 +22,39 @@ func RandomMatch(c *fiber.Ctx) error {
 		})
 	}
 
-	max, err := database.GetMongo().Database("ProfileAPI").Collection("matches").CountDocuments(context.Background(), bson.M{
-		"type": t,
-	})
-
-	if err != nil {
-		fmt.Println("Erorr while counting items from db", err)
-		return c.Status(500).JSON(fiber.Map{
-			"error": "Something went wrong.",
-		})
+	pipeline := []bson.M{
+		{
+			"$match": bson.M{"type": t},
+		},
+		{
+			"$sample": bson.M{"size": 1},
+		},
 	}
 
 	var match types.Match
 
-	err = database.GetMongo().Database("ProfileAPI").Collection("matches").FindOne(context.Background(), bson.M{
-		"type": t,
-	}, options.FindOne().SetSkip(*RandomInt64InRange(max))).Decode(&match)
-
+	cur, err := database.GetMongo().Database("ProfileAPI").Collection("matches").Aggregate(context.Background(), pipeline)
 	if err != nil {
-		fmt.Printf("Erorr while getting random item from db(%d): %s", max, err)
+		fmt.Printf("Error while aggregating: %s", err)
 		return c.Status(500).JSON(fiber.Map{
 			"error": "Something went wrong.",
 		})
 	}
+	defer cur.Close(context.Background())
 
-	return c.JSON([]string{os.Getenv("PUBLIC_URL") + "/image/" + match.Srcs[0], os.Getenv("PUBLIC_URL") + "/image/" + match.Srcs[1]})
+	if cur.Next(context.Background()) {
+		err := cur.Decode(&match)
+		if err != nil {
+			fmt.Printf("Error while decoding: %s", err)
+			return c.Status(500).JSON(fiber.Map{
+				"error": "Something went wrong.",
+			})
+		}
+
+		return c.JSON([]string{os.Getenv("PUBLIC_URL") + "/image/" + match.Srcs[0], os.Getenv("PUBLIC_URL") + "/image/" + match.Srcs[1]})
+	}
+
+	return c.Status(404).JSON(fiber.Map{
+		"error": "No match found.",
+	})
 }
