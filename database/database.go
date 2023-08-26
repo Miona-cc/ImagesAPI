@@ -40,9 +40,8 @@ func GetMongo() *mongo.Client {
 	if mongoClient == nil {
 		fmt.Println("[Databases] Connecting to MongoDB")
 		clientOptions := options.Client().ApplyURI(os.Getenv("MONGO_URI"))
-		clientOptions.SetMinPoolSize(uint64(50))
-		clientOptions.SetMaxPoolSize(uint64(51))
-
+		clientOptions.SetMaxConnIdleTime(time.Minute * 10)
+		clientOptions.SetMaxPoolSize(uint64(100))
 		// Connect to MongoDB
 		ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 		defer cancel()
