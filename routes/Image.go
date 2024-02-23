@@ -36,11 +36,11 @@ func Image(c *fiber.Ctx) error {
 		return c.SendStatus(500)
 	}
 
-	if !CheckImage(image.Src) {
+	if !CheckImage(image.New) {
 		return c.SendStatus(404)
 	}
 
-	res, err := http.Get(image.Src)
+	res, err := http.Get(image.New)
 
 	if err != nil {
 		fmt.Println("Error while fetching image from url: ", err)
