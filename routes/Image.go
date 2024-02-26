@@ -61,9 +61,5 @@ func CheckImage(url string) bool {
 		return false
 	}
 
-	if res.StatusCode != 200 {
-		return false
-	}
-
-	return true
+	return res.StatusCode == 200
 }
